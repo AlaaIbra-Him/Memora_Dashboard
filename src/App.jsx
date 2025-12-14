@@ -14,9 +14,9 @@ export function AppContextProvider({ children }) {
   const [language, setLanguage] = useState('ar');
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = localStorage.getItem('theme') || 'light';
     const savedLang = localStorage.getItem('language') || 'ar';
-    setDarkMode(savedTheme === 'dark');
+    setDarkMode(savedTheme === 'light');
     setLanguage(savedLang);
   }, []);
 

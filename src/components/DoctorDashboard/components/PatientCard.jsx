@@ -33,7 +33,7 @@ export default function PatientCard({ patient, appointmentCount }) {
             } rounded-xl shadow-lg border-2 border-l-4 border-[#0B8FAC] transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-1`}>
 
             {/* Header => Patient Name */}
-            <div className={`${darkMode ? 'bg-linear-to-r from-gray-700 to-gray-800' : 'bg-gradient-to-r from-[#0B8FAC] to-blue-600'
+            <div className={`${darkMode ? 'bg-linear-to-r from-gray-700 to-gray-800' : 'bg-linear-to-r from-[#0B8FAC] to-blue-600'
                 } p-6 text-white`}>
                 <div className="flex items-center gap-3 mb-2">
                     <div className={`p-3 rounded-full ${darkMode ? 'bg-gray-600' : 'bg-white/20 backdrop-blur-sm'
@@ -87,7 +87,7 @@ export default function PatientCard({ patient, appointmentCount }) {
                     )}
                 </div>
 
-                {/* alzahymar stage */}
+                {/* alzheimer stage */}
                 {patient.alzheimer_stage && (
                     <div className={`${darkMode ? 'bg-gray-700' : 'bg-blue-50'
                         } p-4 rounded-lg`}>
@@ -105,8 +105,8 @@ export default function PatientCard({ patient, appointmentCount }) {
                     </div>
                 )}
 
-                {/* nomber of appointments  */}
-                <div className={`${darkMode ? 'bg-linear-to-r from-gray-700 to-gray-800' : 'bg-gradient-to-r from-blue-100 to-blue-50'
+                {/* number of appointments  */}
+                <div className={`${darkMode ? 'bg-linear-to-r from-gray-700 to-gray-800' : 'bg-linear-to-r from-blue-100 to-blue-50'
                     } p-4 rounded-lg border-2 ${darkMode ? 'border-gray-600' : 'border-blue-200'
                     }`}>
                     <div className="flex items-center justify-between">

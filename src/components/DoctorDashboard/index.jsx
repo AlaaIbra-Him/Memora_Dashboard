@@ -34,120 +34,63 @@ export default function DoctorDashboard() {
     const [doctorId, setDoctorId] = useState(null);
     const navigate = useNavigate();
 
-    // const fetchDoctorProfile = async () => {
-    //     const { data: { session } } = await supabase.auth.getSession();
-    //     if (!session) return navigate('/');
-
-    //     const userId = session.user.id;
-    //     setDoctorId(userId);
-
-    //     const { data: profile, error } = await supabase
-    //         .from('users')
-    //         .select('*')
-    //         .eq('id', userId)
-    //         .single();
-
-    //     if (error || profile.role !== 'doctor') return navigate('/');
-    //     setDoctor(profile);
-
-    //     const { data: appts, error: apptsError } = await supabase
-    //         .from('appointments')
-    //         .select('*')
-    //         .eq('doctor_id', userId)
-    //         .order('date', { ascending: true });
-
-    //     if (!apptsError && appts) {
-    //         setAppointments(appts);
-    //         const booked = appts.filter(a => a.status === 'booked').length;
-    //         const cancelled = appts.filter(a => a.status === 'cancelled').length;
-    //         setStats({
-    //             totalAppointments: appts.length,
-    //             bookedAppointments: booked,
-    //             cancelledAppointments: cancelled
-    //         });
-
-    //         const patientIds = [...new Set(appts.map(a => a.patient_id).filter(Boolean))];
-    //         if (patientIds.length > 0) {
-    //             const { data: patientsData } = await supabase
-    //                 .from('users')
-    //                 .select('*')
-    //                 .in('id', patientIds);
-    //             if (patientsData) setPatients(patientsData);
-    //         }
-    //     }
-    // };
-
-
-    // src/components/DoctorDashboard/index.jsx - تحديث fetchDoctorProfile
-
+    // Fetch Doctor Profile and Patients
     const fetchDoctorProfile = async () => {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return navigate('/');
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) return navigate('/');
 
-        const userId = session.user.id;
-        setDoctorId(userId);
+            const userId = session.user.id;
+            setDoctorId(userId);
 
-        const { data: profile, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('id', userId)
-            .single();
+            // Fetch doctor profile
+            const { data: profile, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('id', userId)
+                .single();
 
-        if (error || profile.role !== 'doctor') return navigate('/');
-        setDoctor(profile);
+            if (error || profile?.role !== 'doctor') return navigate('/');
+            setDoctor(profile);
 
-        // fetch appointments
-        const { data: appts, error: apptsError } = await supabase
-            .from('appointments')
-            .select('*')
-            .eq('doctor_id', userId)
-            .order('date', { ascending: true });
+            // Fetch appointments for this doctor
+            const { data: appts, error: apptsError } = await supabase
+                .from('appointments')
+                .select('*')
+                .eq('doctor_id', userId)
+                .order('date', { ascending: true });
 
-        if (!apptsError && appts) {
-            setAppointments(appts);
-            const booked = appts.filter(a => a.status === 'booked').length;
-            const cancelled = appts.filter(a => a.status === 'cancelled').length;
-            setStats({
-                totalAppointments: appts.length,
-                bookedAppointments: booked,
-                cancelledAppointments: cancelled
-            });
-        }
+            if (!apptsError && appts) {
+                setAppointments(appts);
+                const booked = appts.filter(a => a.status === 'booked').length;
+                const cancelled = appts.filter(a => a.status === 'cancelled').length;
+                setStats({
+                    totalAppointments: appts.length,
+                    bookedAppointments: booked,
+                    cancelledAppointments: cancelled
+                });
+            }
 
-        // fetch patients from family members table
-        const { data: familyMembers, error: familyError } = await supabase
-            .from('family_members')
-            .select('patient_id')
-            .eq('doctor_id', userId);
-
-        if (familyError) {
-            console.error('Error fetching family members:', familyError);
-            return;
-        }
-
-        // patient_id 
-        if (familyMembers && familyMembers.length > 0) {
-            const patientIds = familyMembers.map(fm => fm.patient_id);
-
-            // patients patients 
+            //  Fetch patients where doctor_id = userId ( patients table)
             const { data: patientsData, error: patientsError } = await supabase
                 .from('patients')
-                .select('id, name, age, gender, alzheimer_stage')
-                .in('id', patientIds);
+                .select('id, name, age, gender, alzheimer_stage, home_address, phone_emergency, medications, photo_url')
+                .eq('doctor_id', userId);
 
             if (patientsError) {
                 console.error('Error fetching patients:', patientsError);
-                return;
-            }
-
-            if (patientsData) {
-                console.log('Patients Data:', patientsData);
+                setPatients([]);
+            } else if (patientsData) {
+                console.log('Patients loaded:', patientsData.length);
                 setPatients(patientsData);
+            } else {
+                setPatients([]);
             }
-        } else {
-            setPatients([]); 
+        } catch (err) {
+            console.error('Error in fetchDoctorProfile:', err);
         }
     };
+
     useEffect(() => {
         fetchDoctorProfile();
     }, [navigate]);
@@ -201,8 +144,7 @@ export default function DoctorDashboard() {
         try {
             await supabase.from('appointments').delete().eq('id', apptId);
             alert('Appointment deleted successfully');
-            // Refresh data
-            fetchDoctorProfile(); 
+            fetchDoctorProfile();
         } catch (err) {
             console.error(err);
             alert('Error deleting appointment: ' + err.message);

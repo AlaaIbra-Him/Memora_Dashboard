@@ -150,6 +150,9 @@ export const translations = {
         severeStage: 'مرحلة متقدمة',
         unknownStage: 'غير معروفة',
         selectdate: 'اختر التاريخ',
+        address:'العنوان ',
+        emergency: "رقم الطوارئ",
+        medications: 'الادوية ',
         
         // Messages & Alerts
         passwordChanged: 'تم تغيير كلمة المرور بنجاح',
@@ -341,6 +344,9 @@ export const translations = {
         severeStage: 'Severe Stage',
         unknownStage: 'Unknown',
         selectdate: 'Select Date',
+        address: 'Address',
+        emergency:'Emergency Number',
+        medications: 'Medications',
         
         // Messages & Alerts
         passwordChanged: 'Password changed successfully',
