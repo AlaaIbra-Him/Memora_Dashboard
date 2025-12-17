@@ -227,11 +227,11 @@ export default function LandingPage() {
             </section>
 
             {/* About Section */}
-            <section id="about" className={`py-16 ${darkMode ? 'bg-gray-900' : 'bg-white'} transition-colors`}>
+            <section id="about" className={`py-16 ${darkMode ? 'bg-gray-900' : 'bg-blue-50'} transition-colors`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-[#0B8FAC] text-4xl font-bold mb-4">{t.about}</h2>
-                        <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>{t.aboutAlzheimer}</p>
+                        <p className={ `text-xl pt-5 ${darkMode ? 'text-gray-300' : 'text-gray-600'} `}>{t.aboutAlzheimer}</p>
                     </div>
                 </div>
             </section>

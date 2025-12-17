@@ -1,11 +1,17 @@
 // eslint-disable-next-line no-unused-vars
 import { useState, useContext } from 'react';
-import { LogOut, Sun, Moon, X, Users, Calendar, Settings,Menu  } from 'lucide-react';
+import { LogOut, Sun, Moon, X, Users, Calendar, Settings, Menu } from 'lucide-react';
 import { AppContext } from '../../App';
 import NavItem from './components/NavItem';
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen, activePage, setActivePage, doctor, handleLogout, closeSidebar }) {
-    const { darkMode, toggleDarkMode, language, toggleLanguage , t} = useContext(AppContext);
+    const { darkMode, toggleDarkMode, language, toggleLanguage, t } = useContext(AppContext);
+    // console.log(doctor.profile_image_url, 'imageee');
+    // let imageUrl = doctor.profile_image_url;
+    console.log(doctor, 'imageee');
+    console.log('   Image URL:', doctor.profile_image_url);
+
+
 
     return (
         <>
@@ -28,10 +34,30 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, activePage, setAc
             {/* Sidebar */}
             <aside className={`fixed md:relative w-64 h-screen ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-blue-50 border-gray-200'} border-r shadow-lg z-40 transition-transform transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
                 <div className={`p-6 border-b ${darkMode ? 'border-gray-700' : 'border-gray-300'}`}>
+                    {/* ================================================================= */}
+                    <div className="flex flex-col items-center mt-4">
                     <h1 className="text-[#0B8FAC] font-bold text-2xl">Memora</h1>
-                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Dr. {doctor.name}</p>
-                </div>
+                        {doctor.profile_image_url ? (
+                            <img
+                                src={doctor.profile_image_url}
+                                alt="Doctor Profile"
+                                className="w-16 h-16 rounded-full object-cover mb-2 border-2 border-[#0B8FAC]"
+                                onError={(e) => {
+                                    e.target.style.display = 'none';
+                                    e.target.nextElementSibling.style.display = 'flex';
+                                }}
+                            />
+                        ) : null}
+                        <div
+                            className={`w-16 h-16 rounded-full flex items-center justify-center mb-2 border-2 border-[#0B8FAC] ${doctor.profile_image_url ? 'hidden' : ''
+                                } ${darkMode ? 'bg-gray-700' : 'bg-blue-200'}`}
+                        >
+                            <Users className="w-8 h-8 text-[#0B8FAC]" />
+                        </div>
+                        <p className={`text-sm font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Dr. {doctor.name}</p>
+                    </div>
 
+                </div>
                 <nav className="p-4 space-y-2">
                     <NavItem
                         icon={<Calendar className="w-5 h-5" />}

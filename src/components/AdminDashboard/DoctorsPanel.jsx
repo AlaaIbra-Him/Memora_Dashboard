@@ -101,13 +101,25 @@ export default function DoctorsPanel({
                                 : `${darkMode ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-100 hover:bg-gray-50'}`
                                 }`}
                         >
-                            <h3 className={`font-bold truncate ${darkMode ? 'text-white' : 'text-gray-800'}`}>{doctor.name}</h3>
+                            <div className="flex items-center gap-3 mb-2">
+                                {doctor.profile_image_url ? (
+                                    <img
+                                        src={doctor.profile_image_url}
+                                        alt={doctor.name}
+                                        className="w-10 h-10 rounded-full object-cover shrink-0"
+                                    />
+                                ) : (
+                                    <div className="w-10 h-10 rounded-full bg-[#0B8FAC] flex items-center justify-center shrink-0">
+                                        <span className="text-white font-bold text-sm">{doctor.name.charAt(0)}</span>
+                                    </div>
+                                )}
+                                <h3 className={`font-bold truncate ${darkMode ? 'text-white' : 'text-gray-800'}`}>{doctor.name}</h3>
+                            </div>
                             <p className="text-[#0B8FAC] my-1 text-xs font-medium">{doctor.specialty}</p>
                             <p className={`text-xs truncate flex items-center gap-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                                 <Mail size={16} />
                                 <span>{doctor.email}</span>
                             </p>
-
                         </div>
                     ))
                 )}

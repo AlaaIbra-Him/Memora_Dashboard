@@ -45,7 +45,7 @@ export default function DoctorDashboard() {
 
             // Fetch doctor profile
             const { data: profile, error } = await supabase
-                .from('users')
+                .from('doctors')
                 .select('*')
                 .eq('id', userId)
                 .single();
@@ -104,7 +104,7 @@ export default function DoctorDashboard() {
         setLoading(true);
         try {
             await supabase
-                .from('users')
+                .from('doctors')
                 .update({
                     name: doctor.name,
                     phone: doctor.phone,

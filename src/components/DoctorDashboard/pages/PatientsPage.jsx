@@ -26,26 +26,26 @@ export default function PatientsPage({ patients, appointments }) {
     const getAlzheimerStageText = (stage) => {
         if (!stage) return t.unknownStage;
         const stages = {
-            'early': t.earlyStage,
-            'moderate': t.moderateStage,
-            'severe': t.severeStage,
+            'Early': t.earlyStage,
+            'Middle': t.moderateStage,
+            'Late': t.severeStage,
         };
         return stages[stage] || t.unknownStage;
     };
 
     const getAlzheimerStageBadgeColor = (stage) => {
         switch (stage) {
-            case 'early': return darkMode 
-                ? 'bg-yellow-900 text-yellow-200 border-yellow-700' 
+            case 'early': return darkMode
+                ? 'bg-yellow-900 text-yellow-200 border-yellow-700'
                 : 'bg-yellow-100 text-yellow-800 border-yellow-300';
-            case 'moderate': return darkMode 
-                ? 'bg-orange-900 text-orange-200 border-orange-700' 
+            case 'moderate': return darkMode
+                ? 'bg-orange-900 text-orange-200 border-orange-700'
                 : 'bg-orange-100 text-orange-800 border-orange-300';
-            case 'severe': return darkMode 
-                ? 'bg-red-900 text-red-200 border-red-700' 
+            case 'severe': return darkMode
+                ? 'bg-red-900 text-red-200 border-red-700'
                 : 'bg-red-100 text-red-800 border-red-300';
-            default: return darkMode 
-                ? 'bg-gray-700 text-gray-300 border-gray-600' 
+            default: return darkMode
+                ? 'bg-gray-700 text-gray-300 border-gray-600'
                 : 'bg-gray-100 text-gray-800 border-gray-300';
         }
     };
@@ -62,8 +62,8 @@ export default function PatientsPage({ patients, appointments }) {
                     </h2>
                 </div>
                 <span className={`px-4 py-2 rounded-full text-sm font-bold ${darkMode
-                        ? 'bg-gray-500 text-gray-200'
-                        : 'bg-white/20 text-white'
+                    ? 'bg-gray-500 text-gray-200'
+                    : 'bg-white/20 text-white'
                     }`}>
                     {patients.length}
                 </span>
@@ -107,26 +107,26 @@ export default function PatientsPage({ patients, appointments }) {
                                     <th className={`px-4 py-3 text-left font-semibold ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                                         {t.medications}
                                     </th>
-                                    <th className={`px-4 py-3 text-left font-semibold ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    {/* <th className={`px-4 py-3 text-left font-semibold ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                                         {t.appointments}
-                                    </th>
+                                    </th> */}
                                 </tr>
                             </thead>
                             <tbody>
                                 {sortedPatients.map((patient, index) => (
-                                    <tr 
+                                    <tr
                                         key={patient.id}
-                                        className={`${index % 2 === 0 
-                                            ? darkMode ? 'bg-gray-800' : 'bg-white' 
+                                        className={`${index % 2 === 0
+                                            ? darkMode ? 'bg-gray-800' : 'bg-white'
                                             : darkMode ? 'bg-gray-750' : 'bg-gray-50'
-                                        } border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'} hover:${darkMode ? 'bg-gray-700' : 'bg-blue-50'} transition-colors`}
+                                            } border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'} hover:${darkMode ? 'bg-gray-700' : 'bg-blue-50'} transition-colors`}
                                     >
                                         {/* Name with Photo */}
                                         <td className={`px-4 py-3 font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                                             <div className="flex items-center gap-3">
                                                 {patient.photo_url ? (
-                                                    <img 
-                                                        src={patient.photo_url} 
+                                                    <img
+                                                        src={patient.photo_url}
                                                         alt={patient.name}
                                                         className="w-8 h-8 rounded-full object-cover"
                                                     />
@@ -208,7 +208,7 @@ export default function PatientsPage({ patients, appointments }) {
                                         </td>
 
                                         {/* Appointments Count */}
-                                        <td className={`px-4 py-3`}>
+                                        {/* <td className={`px-4 py-3`}>
                                             <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
                                                 patient.appointmentCount > 5
                                                     ? darkMode
@@ -224,7 +224,7 @@ export default function PatientsPage({ patients, appointments }) {
                                             }`}>
                                                 {patient.appointmentCount}
                                             </div>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 ))}
                             </tbody>
