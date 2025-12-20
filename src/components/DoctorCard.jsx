@@ -4,6 +4,7 @@ import { AppContext } from '../App';
 
 export default function DoctorCard({ doctor, onBookAppointment }) {
   const { darkMode, t } = useContext(AppContext);
+  console.log(doctor);
 
   return (
     <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow`}>
@@ -13,10 +14,12 @@ export default function DoctorCard({ doctor, onBookAppointment }) {
       <div className="p-6">
         <h3 className="text-[#0B8FAC] font-bold mb-1">{doctor.name}</h3>
         <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} mb-2`}>{doctor.specialty}</p>
+          <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} mb-2`}>{doctor.location}</p>
         <div className={`flex items-center gap-2 mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
           <Star className="w-4 h-4 text-yellow-600 fill-yellow-600" />
           <span>{doctor.rating}</span>
           {/* <span>• {doctor.experience} {t.specialty}</span> */}
+
         </div>
         <button
           onClick={() => onBookAppointment(doctor)}

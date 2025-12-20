@@ -109,7 +109,8 @@ export default function DoctorDashboard() {
                     name: doctor.name,
                     phone: doctor.phone,
                     specialty: doctor.specialty,
-                    description: doctor.description
+                    description: doctor.description,
+                    location:doctor.location,
                 })
                 .eq('id', doctor.id);
 

@@ -11,7 +11,7 @@ export default function ProfileSection({
     handleSaveProfile
 }) {
     const { darkMode, t } = useContext(AppContext);
-
+console.log(doctor);
 
     return (
         <div className={`lg:col-span-2 ${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6 transition-colors`}>
@@ -60,6 +60,16 @@ export default function ProfileSection({
                                 placeholder={t.specialty}
                             />
                         </div>
+                        <div>
+                            <label className={`block mb-2 font-semibold ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{t.location}</label>
+                            <input
+                                type="text"
+                                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#0B8FAC] transition ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
+                                value={doctor.location}
+                                onChange={(e) => setDoctor({ ...doctor, location: e.target.value })}
+                                placeholder={t.location}
+                            />
+                        </div>
                     </div>
                     <div>
                         <label className={`block mb-2 font-semibold ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{t.description}</label>
@@ -101,6 +111,10 @@ export default function ProfileSection({
                         <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-blue-50'}`}>
                             <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.specialty}</p>
                             <p className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{doctor.specialty}</p>
+                        </div>
+                        <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-blue-50'}`}>
+                            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.location}</p>
+                            <p className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{doctor.location}</p>
                         </div>
                     </div>
                     <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-blue-50'}`}>

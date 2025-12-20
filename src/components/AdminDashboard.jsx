@@ -6,6 +6,9 @@ import AdminHeader from './AdminDashboard/AdminHeader';
 import AdminStats from './AdminDashboard/AdminStats';
 import DoctorsPanel from './AdminDashboard/DoctorsPanel';
 import DoctorDetailsPanel from './AdminDashboard/DoctorDetailsPanel';
+//toast natification
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 export default function AdminDashboard() {
     const { darkMode, language, t } = useContext(AppContext);
@@ -29,6 +32,10 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(false);
     const [authLoading, setAuthLoading] = useState(true);
     const navigate = useNavigate();
+
+    //toast natification
+    // const [showSuccessModal, setShowSuccessModal] = useState(false);
+    // const [createdDoctor, setCreatedDoctor] = useState(null);
 
     // Authentication Check
     useEffect(() => {
@@ -69,7 +76,7 @@ export default function AdminDashboard() {
     const fetchDoctorsAndStats = async () => {
         try {
             const { data: doctorsData, error: doctorsError } = await supabase
-                .from('users')
+                .from('doctors')
                 .select('*')
                 .eq('role', 'doctor');
 
@@ -146,7 +153,7 @@ export default function AdminDashboard() {
             }
 
             alert(`${t.doctorCreatedDetails} ${data.userId}\n${t.name} ${data.fullName}\n${t.email}: ${data.email}`);
-
+            alert("Email sent successfully");
             setFormData({ email: "", password: "", fullName: "", specialty: "" });
             setShowForm(false);
             fetchDoctorsAndStats();
@@ -252,9 +259,8 @@ export default function AdminDashboard() {
 
     // Main Dashboard
     return (
-        <div className={`min-h-screen font-sans transition-colors duration-300 ${
-            darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'
-        } ${language === 'ar' ? 'rtl' : 'ltr'}`}>
+        <div className={`min-h-screen font-sans transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'
+            } ${language === 'ar' ? 'rtl' : 'ltr'}`}>
             {/* Header */}
             <AdminHeader adminName={adminName} handleLogout={handleLogout} />
 
@@ -265,7 +271,7 @@ export default function AdminDashboard() {
                 {/* Main Content Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Doctors List */}
-                    <DoctorsPanel 
+                    <DoctorsPanel
                         doctors={doctors}
                         selectedDoctor={selectedDoctor}
                         showForm={showForm}

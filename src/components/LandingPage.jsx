@@ -40,13 +40,13 @@ export default function LandingPage() {
 
             if (error) throw error;
 
-            console.log('📊 Total doctors:', data.length);
+            console.log(' Total doctors:', data.length);
 
             data.forEach((doctor, index) => {
                 console.log(` Doctor ${index + 1}:`, doctor.name);
                 // console.log('   Email:', doctor.email);
                 console.log('   Image URL:', doctor.profile_image_url);
-                // console.log('   Full data:', doctor);
+                console.log('   Full data:', doctor);
             });
 
 
@@ -54,11 +54,10 @@ export default function LandingPage() {
                 id: doctor.id,
                 name: doctor.name,
                 specialty: doctor.specialty,
-                experience: doctor.experience,
+                // experience: doctor.experience,
                 rating: doctor.rating || 4.8,
+                location: doctor.location,
                 image: doctor.profile_image_url || 'https://images.unsplash.com/photo-1755189118414-14c8dacdb082?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-
-
                 email: doctor.email,
             }));
             console.log('Formatted doctors:', formattedDoctors);
@@ -83,8 +82,8 @@ export default function LandingPage() {
         setShowBookingForm(true);
     };
 
-    const handleOpenAuth = (role) => {
-        setShowAuthForm(role);
+    const handleOpenLogin = () => {
+        setShowAuthForm(true);
         setIsMenuOpen(false);
     };
 
@@ -143,18 +142,13 @@ export default function LandingPage() {
 
                         <div className="hidden md:flex items-center gap-4">
                             <button
-                                onClick={() => handleOpenAuth('doctor')}
-                                className={`px-4 py-2 rounded-lg transition ${darkMode ? 'text-[#0B8FAC] hover:bg-gray-700 font-bold' : 'text-[#0B8FAC] hover:bg-gray-100'
-                                    }`}
-                            >
-                                {t.doctorSignIn}
-                            </button>
-                            <button
-                                onClick={() => handleOpenAuth('admin')}
+                                onClick={handleOpenLogin}
                                 className="px-6 py-2 bg-[#0B8FAC] text-white rounded-lg hover:bg-[#0a7a94] transition font-bold"
                             >
-                                {t.adminSignIn}
+                                {t.login}
                             </button>
+
+
                         </div>
 
                         <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -180,16 +174,10 @@ export default function LandingPage() {
                                 {t.contact}
                             </button>
                             <button
-                                onClick={() => handleOpenAuth('doctor')}
-                                className="px-4 py-2 text-[#0B8FAC] border border-[#0B8FAC] rounded-lg hover:bg-gray-100 text-left"
+                                onClick={handleOpenLogin}
+                                className="px-4 py-2 bg-[#0B8FAC] text-white rounded-lg hover:bg-[#0a7a94] text-left"
                             >
-                                {t.doctorSignIn}
-                            </button>
-                            <button
-                                onClick={() => handleOpenAuth('admin')}
-                                className="px-4 py-2 bg-[#0B8FAC] text-white rounded-lg hover:bg-[#0a7a94]"
-                            >
-                                {t.adminSignIn}
+                                {t.login}
                             </button>
                         </nav>
                     </div>
@@ -231,7 +219,7 @@ export default function LandingPage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-[#0B8FAC] text-4xl font-bold mb-4">{t.about}</h2>
-                        <p className={ `text-xl pt-5 ${darkMode ? 'text-gray-300' : 'text-gray-600'} `}>{t.aboutAlzheimer}</p>
+                        <p className={`text-xl pt-5 ${darkMode ? 'text-gray-300' : 'text-gray-600'} `}>{t.aboutAlzheimer}</p>
                     </div>
                 </div>
             </section>

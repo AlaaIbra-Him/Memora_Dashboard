@@ -4,8 +4,12 @@ export const translations = {
         // Common
         memora: 'ميمورا',
         welcome: 'مرحبا',
+        login: "تسجيل الدخول",
         dashboard: 'لوحة التحكم',
         logout: 'تسجيل الخروج',
+        admin: 'أدمن',
+        selectRole:'أختر من الاتى',
+        doctor: 'دكتور',
         cancel: 'إلغاء',
         delete: 'حذف',
         save: 'حفظ',
@@ -69,7 +73,7 @@ export const translations = {
         appointments: 'المواعيد',
         patients: 'المرضى',
         settings: 'الإعدادات',
-        
+
         // Doctor Dashboard - Appointments Page
         totalAppointments: 'إجمالي المواعيد',
         totalAppts: 'إجمالي المواعيد',
@@ -85,7 +89,7 @@ export const translations = {
         weeklySchedule: 'الجدول الأسبوعي',
         previousWeek: 'الأسبوع السابق',
         nextWeek: 'الأسبوع التالي',
-        
+
         // Days of week
         sunday: 'الأحد',
         monday: 'الإثنين',
@@ -94,7 +98,7 @@ export const translations = {
         thursday: 'الخميس',
         friday: 'الجمعة',
         saturday: 'السبت',
-        
+
         // Table Headers
         patient: 'المريض',
         patientNameHeader: 'اسم المريض',
@@ -105,16 +109,16 @@ export const translations = {
         status: 'الحالة',
         action: 'الإجراء',
         actions: 'الإجراءات',
-        
+
         // Status & Actions
         confirmed: 'مؤكد',
         booked: 'محجوز',
         cancelled: 'ملغاة',
         cancelAppointment: 'إلغاء الموعد',
-        
+
         // Patients Page
         noPatientsYet: 'لا يوجد مرضى حتى الآن',
-        
+
         // Settings Page
         editProfile: 'تعديل الملف الشخصي',
         changePassword: 'تغيير كلمة المرور',
@@ -150,10 +154,10 @@ export const translations = {
         severeStage: 'مرحلة متقدمة',
         unknownStage: 'غير معروفة',
         selectdate: 'اختر التاريخ',
-        address:'العنوان ',
+        address: 'العنوان ',
         emergency: "رقم الطوارئ",
         medications: 'الادوية ',
-        
+
         // Messages & Alerts
         passwordChanged: 'تم تغيير كلمة المرور بنجاح',
         profileUpdated: 'تم تحديث الملف الشخصي بنجاح',
@@ -199,6 +203,10 @@ export const translations = {
         // Common
         memora: 'Memora',
         welcome: 'Welcome',
+        login: ' Login',
+        admin: 'Admin',
+        doctor: 'Doctor',
+        selectRole:"Select Role",
         dashboard: 'Dashboard',
         logout: 'Logout',
         cancel: 'Cancel',
@@ -264,7 +272,7 @@ export const translations = {
         appointments: 'Appointments',
         patients: 'Patients',
         settings: 'Settings',
-        
+
         // Doctor Dashboard - Appointments Page
         totalAppointments: 'Total Appointments',
         totalAppts: 'Total Appointments',
@@ -280,7 +288,7 @@ export const translations = {
         weeklySchedule: 'Weekly Schedule',
         previousWeek: 'Previous Week',
         nextWeek: 'Next Week',
-        
+
         // Days of week
         sunday: 'Sunday',
         monday: 'Monday',
@@ -289,7 +297,7 @@ export const translations = {
         thursday: 'Thursday',
         friday: 'Friday',
         saturday: 'Saturday',
-        
+
         // Table Headers
         patient: 'Patient',
         patientNameHeader: 'Patient Name',
@@ -300,16 +308,16 @@ export const translations = {
         status: 'Status',
         action: 'Action',
         actions: 'Actions',
-        
+
         // Status & Actions
         confirmed: 'Confirmed',
         booked: 'Booked',
         cancelled: 'Cancelled',
         cancelAppointment: 'Cancel',
-        
+
         // Patients Page
         noPatientsYet: 'No patients yet',
-        
+
         // Settings Page
         editProfile: 'Edit Profile',
         changePassword: 'Change Password',
@@ -345,9 +353,9 @@ export const translations = {
         unknownStage: 'Unknown',
         selectdate: 'Select Date',
         address: 'Address',
-        emergency:'Emergency Number',
+        emergency: 'Emergency Number',
         medications: 'Medications',
-        
+
         // Messages & Alerts
         passwordChanged: 'Password changed successfully',
         profileUpdated: 'Profile updated successfully',
