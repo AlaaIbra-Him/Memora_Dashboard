@@ -2,9 +2,11 @@ import { useState, useContext } from 'react';
 import { X, User, Phone, Calendar, Clock } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 import { AppContext } from '../App';
+import { useDialog } from '../hooks/useDialog';
 
 
 export default function AppointmentForm({ doctor, onClose }) {
+  const { showDialog } = useDialog();
   const { darkMode, t } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -23,12 +25,6 @@ export default function AppointmentForm({ doctor, onClose }) {
     setLoading(true);
 
     try {
-      if (!doctor.id) {
-        throw new Error("Doctor ID is missing");
-      }
-
-      console.log("Booking appointment for doctor ID:", doctor.id);
-
       const { data: existingAppt, error: checkError } = await supabase
         .from('appointments')
         .select('id')
@@ -38,17 +34,22 @@ export default function AppointmentForm({ doctor, onClose }) {
         .eq('status', 'booked')
         .maybeSingle();
 
-      if (checkError) {
-        console.error("Check error:", checkError);
-        throw checkError;
-      }
+      if (checkError) throw checkError;
 
       if (existingAppt) {
-        alert(t.slotTaken);
+        //  Busy or not available
+        showDialog({
+          type: 'warning',
+          title: t.dialogSlotAlreadyBookedTitle,
+          message:t.dialogSlotAlreadyBooked,
+          confirmText:t.dialogErrorClose,
+          onConfirm: () => { }
+        });
         setLoading(false);
         return;
       }
 
+      // eslint-disable-next-line no-unused-vars
       const { data, error: insertError } = await supabase
         .from('appointments')
         .insert([
@@ -67,12 +68,28 @@ export default function AppointmentForm({ doctor, onClose }) {
 
       if (insertError) throw insertError;
 
-      console.log(" Appointment created:", data);
-      alert(t.appointmentBooked);
-      onClose();
+      //  نجاح الحجز
+      showDialog({
+        type: 'success',
+        title: t.dialogSuccessTitle,
+        message: `${t.successBookAppointment}\n\n${t.doctor}: ${doctor.name}\n${t.date}: ${formData.date}\n${t.time}: ${formData.time}`,
+        confirmText: t.dialogSuccessClose,
+        onConfirm: () => {
+          onClose();
+        }
+      });
+
     } catch (err) {
-      console.error(' Error:', err);
-      alert(`${t.appointmentFailed} ${err.message}`);
+      console.error('Error:', err);
+
+      // error in booking
+      showDialog({
+        type: 'error',
+        title: t.dialogErrorTitle,
+        message: `${t.dialogErrorTitle}: ${err.message}\n\n${t.dialogTryAgain}`,
+        confirmText: t.dialogErrorClose,
+        onConfirm: () => { }
+      });
     } finally {
       setLoading(false);
     }

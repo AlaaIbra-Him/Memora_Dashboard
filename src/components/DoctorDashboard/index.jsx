@@ -7,9 +7,11 @@ import Header from './Header';
 import AppointmentsPage from './pages/AppointmentsPage';
 import PatientsPage from './pages/PatientsPage';
 import SettingsPage from './pages/SettingsPage';
+import { useDialog } from '../../hooks/useDialog';
+
 
 export default function DoctorDashboard() {
-    const { darkMode } = useContext(AppContext);
+    const { darkMode, t } = useContext(AppContext);
     const [activePage, setActivePage] = useState('appointments');
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -33,6 +35,7 @@ export default function DoctorDashboard() {
     const [newPassword, setNewPassword] = useState('');
     const [doctorId, setDoctorId] = useState(null);
     const navigate = useNavigate();
+    const { showDialog } = useDialog();
 
     // Fetch Doctor Profile and Patients
     const fetchDoctorProfile = async () => {
@@ -110,7 +113,7 @@ export default function DoctorDashboard() {
                     phone: doctor.phone,
                     specialty: doctor.specialty,
                     description: doctor.description,
-                    location:doctor.location,
+                    location: doctor.location,
                 })
                 .eq('id', doctor.id);
 
@@ -141,17 +144,43 @@ export default function DoctorDashboard() {
     };
 
     const handleDeleteAppointment = async (apptId) => {
-        if (!window.confirm('Are you sure you want to delete this appointment?')) return;
-        try {
-            await supabase.from('appointments').delete().eq('id', apptId);
-            alert('Appointment deleted successfully');
-            fetchDoctorProfile();
-        } catch (err) {
-            console.error(err);
-            alert('Error deleting appointment: ' + err.message);
-        }
-    };
+        showDialog({
+            type: 'warning',
+            title: t.dialogConfirmDeleteAppointment,
+            message: t.dialogDeleteAppointmentMessage,
+            confirmText: t.dialogDelete,
+            cancelText: t.dialogCancel,
+            onConfirm: async () => {
+                try {
+                    await supabase.from('appointments').delete().eq('id', apptId);
 
+                    // deletion success 
+                    showDialog({
+                        type: 'success',
+                        title: t.dialogSuccessTitle,
+                        message: t.dialogAppointmentDeletedSuccess,
+                        confirmText: t.dialogSuccessClose,
+                        onConfirm: () => {
+                            fetchDoctorProfile();
+                        }
+                    });
+
+                } catch (err) {
+                    console.error(err);
+
+                    //   error in deletion 
+                    showDialog({
+                        type: 'error',
+                        title: t.dialogErrorTitle,
+                        message: `${t.dialogAppointmentDeleteError}:\n${err.message}`,
+                        confirmText: t.dialogErrorClose,
+                        onConfirm: () => { }
+                    });
+                }
+            },
+            onCancel: () => { }
+        });
+    };
     const closeSidebar = () => setSidebarOpen(false);
 
     return (

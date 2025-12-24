@@ -100,9 +100,13 @@ export default function LandingPage() {
                 } shadow-sm z-50 border-b transition-colors`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
                     <div className="flex items-center gap-2">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${darkMode ? 'bg-[#0B8FAC]' : 'bg-[#0B8FAC]'
+                        <div className={`w-8 h-9 rounded-lg flex items-center justify-center '
                             }`}>
-                            <Heart className="w-6 h-6 text-white" />
+                            <img
+                                src="/memologo.png"
+                                alt="Memora Logo"
+                                className="w-8 h-8 object-contain"
+                            />
                         </div>
                         <span className="text-[#0B8FAC] text-xl font-bold">{t.memora}</span>
                     </div>

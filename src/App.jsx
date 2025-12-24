@@ -5,6 +5,9 @@ import AdminDashboard from './components/AdminDashboard';
 import DoctorDashboard from './components/DoctorDashboard';
 import { supabase } from './supabaseClient';
 import { translations } from './i18n/translations';
+import { DialogProvider } from './context/DialogProvider';
+import ConfirmDialog from './components/Dialogs/ConfirmDialog';
+import { useDialog } from './hooks/useDialog';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AppContext = createContext();
@@ -33,9 +36,11 @@ export function AppContextProvider({ children }) {
   const t = translations[language];
 
   return (
-    <AppContext.Provider value={{ darkMode, toggleDarkMode, language, toggleLanguage, t }}>
-      {children}
-    </AppContext.Provider>
+    <DialogProvider>
+      <AppContext.Provider value={{ darkMode, toggleDarkMode, language, toggleLanguage, t }}>
+        {children}
+      </AppContext.Provider>
+    </DialogProvider>
   );
 }
 
@@ -46,6 +51,38 @@ function AppWrapper() {
         <App />
       </AppContextProvider>
     </Router>
+  );
+}
+
+function DialogComponent() {
+  const { dialog, closeDialog } = useDialog();
+
+  const handleConfirm = () => {
+    if (dialog.onConfirm) {
+      dialog.onConfirm();
+    }
+    closeDialog();
+  };
+
+  const handleCancel = () => {
+    if (dialog.onCancel) {
+      dialog.onCancel();
+    }
+    closeDialog();
+  };
+
+  return (
+    <ConfirmDialog
+      isOpen={dialog.isOpen}
+      type={dialog.type}
+      title={dialog.title}
+      message={dialog.message}
+      confirmText={dialog.confirmText}
+      cancelText={dialog.cancelText}
+      loading={dialog.loading}
+      onConfirm={handleConfirm}
+      onCancel={handleCancel}
+    />
   );
 }
 
@@ -96,11 +133,15 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage onLoginSuccess={handleLoginSuccess} />} />
-      <Route path="/admin" element={session ? <AdminDashboard /> : <LandingPage onLoginSuccess={handleLoginSuccess} />} />
-      <Route path="/doctor" element={session ? <DoctorDashboard /> : <LandingPage onLoginSuccess={handleLoginSuccess} />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<LandingPage onLoginSuccess={handleLoginSuccess} />} />
+        <Route path="/admin" element={session ? <AdminDashboard /> : <LandingPage onLoginSuccess={handleLoginSuccess} />} />
+        <Route path="/doctor" element={session ? <DoctorDashboard /> : <LandingPage onLoginSuccess={handleLoginSuccess} />} />
+      </Routes>
+
+      <DialogComponent />
+    </>
   );
 }
 

@@ -2,54 +2,63 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../../../App';
 import { supabase } from '../../../supabaseClient';
+import { useDialog } from '../../../hooks/useDialog';
 import StatCard from '../components/StatCard';
-// import DateSelector from '../components/DateSelector';
-
-
-
 import AppointmentsTable from '../components/AppointmentsTable';
 import WeeklySchedule from '../components/WeeklySchedule';
 
-
-
-
-export default function AppointmentsPage({ appointments, stats, handleDeleteAppointment, selectedDate, onAppointmentUpdate
-    //  setSelectedDate
-}) {
+export default function AppointmentsPage({ appointments, stats, handleDeleteAppointment, selectedDate, onAppointmentUpdate }) {
     const { darkMode, t } = useContext(AppContext);
-
-
-
+    const { showDialog } = useDialog();
 
     const appointmentPercentage = stats.totalAppointments > 0
         ? Math.round((stats.bookedAppointments / stats.totalAppointments) * 100)
         : 0;
 
-    // const getAvailableDates = () => {
-    //     const dates = appointments.map(a => a.date);
-    //     return [...new Set(dates)].sort();
-    // };
-
     const selectedDateAppointments = appointments.filter(a => a.date === selectedDate);
-    // const availableDates = getAvailableDates();
 
     const handleCancelAppointment = async (apptId) => {
-        if (!window.confirm(t.confirmCancelAppointment)) return;
+        showDialog({
+            type: 'warning',
+            title: t.dialogWarningTitle,
+            message: t.confirmCancelAppointment,
+            confirmText: t.cancel,
+            cancelText: t.dialogCancel,
+            onConfirm: async () => {
+                try {
+                    const { error } = await supabase
+                        .from('appointments')
+                        .update({ status: 'cancelled' })
+                        .eq('id', apptId);
 
-        try {
-            const { error } = await supabase
-                .from('appointments')
-                .update({ status: 'cancelled' })
-                .eq('id', apptId);
+                    if (error) throw error;
 
-            if (error) throw error;
+                    //  cancelled successfully
+                    showDialog({
+                        type: 'success',
+                        title: t.dialogSuccessTitle,
+                        message: t.appointmentCancelled,
+                        confirmText: t.dialogSuccessClose,
+                        onConfirm: () => {
+                            if (onAppointmentUpdate) onAppointmentUpdate();
+                        }
+                    });
 
-            alert(t.appointmentCancelled);
-            if (onAppointmentUpdate) onAppointmentUpdate();
-        } catch (err) {
-            console.error(err);
-            alert(`${t.errorCancellingAppointment}: ${err.message}`);
-        }
+                } catch (err) {
+                    console.error(err);
+
+                    // error cancelling appointment
+                    showDialog({
+                        type: 'error',
+                        title: t.dialogErrorTitle,
+                        message: `${t.errorCancellingAppointment}:\n${err.message}`,
+                        confirmText: t.dialogErrorClose,
+                        onConfirm: () => { }
+                    });
+                }
+            },
+            onCancel: () => { }
+        });
     };
 
     return (
@@ -85,19 +94,12 @@ export default function AppointmentsPage({ appointments, stats, handleDeleteAppo
                 handleCancelAppointment={handleCancelAppointment}
                 isDaily={true}
             />
+
             {/* Weekly Schedule */}
             <WeeklySchedule
                 appointments={appointments}
                 handleCancelAppointment={handleCancelAppointment}
             />
-
-            {/* Date Selector */}
-            {/* <DateSelector 
-                availableDates={availableDates}
-                selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate}
-            /> */}
-
 
             {/* All Appointments */}
             <AppointmentsTable

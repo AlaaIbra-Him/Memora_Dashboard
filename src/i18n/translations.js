@@ -8,7 +8,7 @@ export const translations = {
         dashboard: 'لوحة التحكم',
         logout: 'تسجيل الخروج',
         admin: 'أدمن',
-        selectRole:'أختر من الاتى',
+        selectRole: 'أختر من الاتى',
         doctor: 'دكتور',
         cancel: 'إلغاء',
         delete: 'حذف',
@@ -198,6 +198,60 @@ export const translations = {
         serverRunning: 'الخادم يعمل على http://localhost:3000',
         envVariablesSet: 'متغيرات .env محددة بشكل صحيح',
         npmStart: 'npm start أو node server.js نشط',
+
+        // Dialog
+        // Dialog - Success Messages
+        dialogSuccessTitle: 'تم بنجاح',
+        dialogSuccessClose: 'حسناً',
+
+        // Dialog - Error Messages
+        dialogErrorTitle: 'حدث خطأ',
+        dialogErrorClose: 'حسناً',
+
+        // Dialog - Warning Messages
+        dialogWarningTitle: 'تأكيد العملية',
+
+        // Dialog - Info Messages
+        dialogInfoTitle: 'معلومة',
+
+        // Dialog - Common Actions
+        dialogConfirm: 'تأكيد',
+        dialogCancel: 'إلغاء',
+        dialogDelete: 'حذف',
+        dialogSave: 'حفظ',
+        dialogYes: 'نعم',
+        dialogNo: 'لا',
+
+        // Dialog - Doctor Related
+        dialogConfirmDeleteDoctor: 'تأكيد حذف الطبيب',
+        dialogDeleteDoctorMessage: 'هل أنت متأكد من حذف هذا الطبيب؟\n\nسيتم حذف جميع البيانات المرتبطة به أيضاً.',
+        dialogDoctorDeletedSuccess: 'تم حذف الطبيب وجميع بيانته بنجاح.',
+        dialogDoctorAddedSuccess: 'تم إضافة الطبيب بنجاح!',
+        dialogDoctorDeleteError: 'فشل حذف الطبيب',
+        dialogDoctorCreatError: 'فشل إنشاء الطبيب',
+
+        // Dialog - Appointment Related
+        successBookAppointment: 'تم حجز الموعد بنجاح!',
+        dialogConfirmDeleteAppointment: 'تأكيد حذف الموعد',
+        dialogDeleteAppointmentMessage: 'هل أنت متأكد من حذف هذا الموعد؟',
+        dialogAppointmentDeletedSuccess: 'تم حذف الموعد بنجاح.',
+        dialogAppointmentCancelledSuccess: 'تم إلغاء الموعد بنجاح.',
+        dialogAppointmentBookedSuccess: 'تم حجز الموعد بنجاح!',
+        dialogSlotAlreadyBooked: 'عذراً، هذا الموعد محجوز بالفعل!\n\nاختر موعد آخر من فضلك.',
+        dialogSlotAlreadyBookedTitle: 'الموعد مشغول',
+        dialogAppointmentDeleteError: 'فشل حذف الموعد',
+        dialogAppointmentCancelError: 'فشل إلغاء الموعد',
+
+        // Dialog - Profile Related
+        dialogProfileUpdatedSuccess: 'تم تحديث بيانات الملف الشخصي بنجاح.',
+        dialogPasswordChangedSuccess: 'تم تغيير كلمة المرور بنجاح.',
+        dialogProfileUpdateError: 'فشل تحديث البيانات',
+        dialogPasswordChangeError: 'فشل تغيير كلمة المرور',
+
+        // Dialog - Validation
+        dialogCheckServer: 'تأكد من:\n1. الخادم يعمل على http://localhost:3000\n2. البيانات صحيحة',
+        dialogTryAgain: 'حاول مرة أخرى من فضلك.',
+        dialogRequiredFields: 'الرجاء ملء جميع الحقول المطلوبة.',
     },
     en: {
         // Common
@@ -206,7 +260,7 @@ export const translations = {
         login: ' Login',
         admin: 'Admin',
         doctor: 'Doctor',
-        selectRole:"Select Role",
+        selectRole: "Select Role",
         dashboard: 'Dashboard',
         logout: 'Logout',
         cancel: 'Cancel',
@@ -396,5 +450,62 @@ export const translations = {
         serverRunning: 'Server is running on http://localhost:3000',
         envVariablesSet: '.env variables are set correctly',
         npmStart: 'npm start or node server.js is active',
+
+        // Dialog
+
+        // Dialog - Success Messages
+        dialogSuccessTitle: 'Success',
+        dialogSuccessClose: 'OK',
+
+        // Dialog - Error Messages
+        dialogErrorTitle: 'Error Occurred',
+        dialogErrorClose: 'OK',
+
+        // Dialog - Warning Messages
+        dialogWarningTitle: 'Confirm Action',
+        dialogWarningClose: 'OK',
+
+        // Dialog - Info Messages
+        dialogInfoTitle: 'Information',
+        dialogInfoClose: 'OK',
+
+        // Dialog - Common Actions
+        dialogConfirm: 'Confirm',
+        dialogCancel: 'Cancel',
+        dialogDelete: 'Delete',
+        dialogSave: 'Save',
+        dialogYes: 'Yes',
+        dialogNo: 'No',
+
+        // Dialog - Doctor Related
+        dialogConfirmDeleteDoctor: 'Confirm Delete Doctor',
+        dialogDeleteDoctorMessage: 'Are you sure you want to delete this doctor?\n\nAll associated data will be deleted as well.',
+        dialogDoctorDeletedSuccess: 'Doctor and all associated data deleted successfully.',
+        dialogDoctorAddedSuccess: 'Doctor added successfully!',
+        dialogDoctorDeleteError: 'Failed to delete doctor',
+
+        // Dialog - Appointment Related
+        dialogConfirmDeleteAppointment: 'Confirm Delete Appointment',
+        successBookAppointment: 'Appointment booked successfully!',
+        dialogDeleteAppointmentMessage: 'Are you sure you want to delete this appointment?',
+        dialogAppointmentDeletedSuccess: 'Appointment deleted successfully.',
+        dialogAppointmentCancelledSuccess: 'Appointment cancelled successfully.',
+        dialogAppointmentBookedSuccess: 'Appointment booked successfully!',
+        dialogSlotAlreadyBooked: 'Sorry, this appointment slot is already booked!\n\nPlease choose another time.',
+        dialogSlotAlreadyBookedTitle: 'Slot Already Booked',
+        dialogAppointmentDeleteError: 'Failed to delete appointment',
+        dialogAppointmentCancelError: 'Failed to cancel appointment',
+
+        // Dialog - Profile Related
+        dialogProfileUpdatedSuccess: 'Profile data updated successfully.',
+        dialogPasswordChangedSuccess: 'Password changed successfully.',
+        dialogProfileUpdateError: 'Failed to update data',
+        dialogPasswordChangeError: 'Failed to change password',
+
+        // Dialog - Validation
+        dialogCheckServer: 'Make sure:\n1. Server is running on http://localhost:3000\n2. Data is correct',
+        dialogTryAgain: 'Please try again.',
+        dialogRequiredFields: 'Please fill all required fields.',
+
     }
 };

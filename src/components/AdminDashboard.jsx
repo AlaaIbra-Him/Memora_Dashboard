@@ -6,9 +6,7 @@ import AdminHeader from './AdminDashboard/AdminHeader';
 import AdminStats from './AdminDashboard/AdminStats';
 import DoctorsPanel from './AdminDashboard/DoctorsPanel';
 import DoctorDetailsPanel from './AdminDashboard/DoctorDetailsPanel';
-//toast natification
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { useDialog } from '../hooks/useDialog';
 
 export default function AdminDashboard() {
     const { darkMode, language, t } = useContext(AppContext);
@@ -23,15 +21,19 @@ export default function AdminDashboard() {
         bookedAppointments: 0,
         cancelledAppointments: 0
     });
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        fullName: '',
-        specialty: ''
-    });
+    // const [formData, setFormData] = useState({
+    //     email: '',
+    //     password: '',
+    //     fullName: '',
+    //     specialty: ''
+    // });
     const [loading, setLoading] = useState(false);
     const [authLoading, setAuthLoading] = useState(true);
     const navigate = useNavigate();
+
+    const { showDialog } = useDialog();
+    const [formData, setFormData] = useState({ email: '', password: '', fullName: '', specialty: '' });
+    // const [loading, setLoading] = useState(false);
 
     //toast natification
     // const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -152,71 +154,144 @@ export default function AdminDashboard() {
                 throw new Error("Invalid response from server");
             }
 
-            alert(`${t.doctorCreatedDetails} ${data.userId}\n${t.name} ${data.fullName}\n${t.email}: ${data.email}`);
-            alert("Email sent successfully");
-            setFormData({ email: "", password: "", fullName: "", specialty: "" });
-            setShowForm(false);
-            fetchDoctorsAndStats();
+            showDialog({
+                type: 'success',
+                title: t.dialogSuccessTitle,
+                message: `${t.doctorCreatedDetails}  ${data.userId}\n ${t.name}: ${data.fullName}\n ${t.email}: ${data.email}`,
+                confirmText: t.dialogSuccessClose,
+                onConfirm: () => {
+                    setFormData({ email: "", password: "", fullName: "", specialty: "" });
+                    setShowForm(false);
+                    fetchDoctorsAndStats();
+                }
+            });
+
 
         } catch (err) {
             console.error("Error:", err);
-            alert(`${t.error}: ${err.message}\n\n${t.makesSure}:\n1. ${t.serverRunning}\n2. ${t.envVariablesSet}\n3. ${t.npmStart}`);
+            // alert(`${t.error}: ${err.message}\n\n${t.makesSure}:\n1. ${t.serverRunning}\n2. ${t.envVariablesSet}\n3. ${t.npmStart}`);
+
+            showDialog({
+                type: 'error',
+                title: t.dialogErrorTitle,
+                message: `${t.dialogDoctorCreatError} \n\n${err.message}\n\n ${t.dialogCheckServer}`,
+                confirmText: t.dialogErrorClose,
+                onConfirm: () => { }
+            });
+
         } finally {
             setLoading(false);
         }
     };
 
     // Delete Doctor
+
     const handleDeleteDoctor = async (doctorId, doctorEmail) => {
-        if (!window.confirm(`${t.confirmDeleteDoctor} ${doctorEmail} ${t.andAllAppointments}`))
-            return;
+        //   const { showDialog } = useDialog();
 
-        try {
-            setLoading(true);
+        // delete confirmation
+        showDialog({
+            type: 'warning',
+            title: t.dialogDeleteDoctor,
+            message: `${t.dialogDeleteDoctorMessage} ${doctorEmail}`,
+            confirmText: t.delete,
+            cancelText: t.cancel,
+            onConfirm: async () => {
+                try {
+                    setLoading(true);
 
-            const res = await fetch(`http://localhost:3000/deleteDoctor/${doctorId}`, {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-            });
+                    const res = await fetch(`http://localhost:3000/deleteDoctor/${doctorId}`, {
+                        method: "DELETE",
+                        headers: { "Content-Type": "application/json" },
+                    });
 
-            if (!res.ok) {
-                const errorData = await res.json();
-                throw new Error(errorData.error || `HTTP ${res.status}`);
+                    if (!res.ok) {
+                        const errorData = await res.json();
+                        throw new Error(errorData.error || `HTTP ${res.status}`);
+                    }
+
+                    const data = await res.json();
+
+                    if (!data.success) {
+                        throw new Error(data.error || "Delete failed");
+                    }
+
+                    //  deletion success
+                    showDialog({
+                        type: 'success',
+                        title: t.dialogSuccessTitle,
+                        message: t.doctorDeleted,
+                        confirmText: t.dialogSuccessClose,
+                        onConfirm: () => {
+                            setSelectedDoctor(null);
+                            setDoctorAppointments([]);
+                            fetchDoctorsAndStats();
+                        }
+                    });
+
+                } catch (err) {
+                    console.error('Error deleting doctor:', err);
+
+                    // error in deletion
+                    showDialog({
+                        type: 'error',
+                        title: t.dialogErrorTitle,
+                        message: `${t.dialogErrorTitle}: ${err.message}`,
+                        confirmText: t.dialogErrorClose,
+                        onConfirm: () => { }
+                    });
+                } finally {
+                    setLoading(false);
+                }
+            },
+            onCancel: () => {
+                console.log('Deletion cancelled');
             }
-
-            const data = await res.json();
-
-            if (!data.success) {
-                throw new Error(data.error || "Delete failed");
-            }
-
-            alert(t.doctorDeleted);
-            setSelectedDoctor(null);
-            setDoctorAppointments([]);
-            fetchDoctorsAndStats();
-
-        } catch (err) {
-            console.error('Error deleting doctor:', err);
-            alert(`${t.error}: ${err.message}`);
-        } finally {
-            setLoading(false);
-        }
+        });
     };
 
     // Delete Appointment
     const handleDeleteAppointment = async (appointmentId) => {
-        if (!window.confirm(t.confirmDeleteAppointment)) return;
 
-        try {
-            await supabase.from('appointments').delete().eq('id', appointmentId);
-            alert(t.successDelete);
-            fetchDoctorAppointments(selectedDoctor);
-            fetchDoctorsAndStats();
-        } catch (err) {
-            console.error('Error deleting appointment:', err);
-            alert(`${t.error}: ${err.message}`);
-        }
+        //  delete confirmation 
+        showDialog({
+            type: 'warning',
+            title:t.dialogSuccessTitle,
+            message: t.confirmDeleteAppointment,
+            confirmText: t.delete,
+            cancelText: t.cancel,
+            onConfirm: async () => {
+                try {
+                    await supabase.from('appointments').delete().eq('id', appointmentId);
+
+                    //  successful deletion
+                    showDialog({
+                        type: 'success',
+                        title: t.dialogSuccessTitle,
+                        message: t.successDelete,
+                        confirmText: t.dialogSuccessClose,
+                        onConfirm: () => {
+                            fetchDoctorAppointments(selectedDoctor);
+                            fetchDoctorsAndStats();
+                        }
+                    });
+                } catch (err) {
+                    console.error('Error deleting appointment:', err);
+
+                    //  خطأ
+                    showDialog({
+                        type: 'error',
+                        title: t.dialogErrorTitle,
+                        message: `${t.dialogErrorTitle}: ${err.message}`,
+                        confirmText: t.dialogErrorClose,
+                        onConfirm: () => { }
+                    });
+                }
+            },
+            onCancel: () => { }
+        });
     };
+
 
     // Cancel Appointment
     const handleCancelAppointment = async (appointmentId) => {
