@@ -33,11 +33,11 @@ All data is dynamically fetched from **Supabase**.
 
 After logging in as a doctor, the dashboard includes:
 
+#### Appointments Page
 - **Total Appointments**
 - **Today’s Appointments**
 - **Schedule Overview**
 
-### Additional Pages:
 #### Patients Page
 Displays a list of patients associated with the doctor, including:
 - Patient photo
@@ -77,6 +77,27 @@ The Admin has full control over the system:
    - Email
    - Password
    - Website link
+
+---
+🌗 Theme Support
+
+Light Mode
+
+Dark Mode
+
+Theme persistence across sessions
+
+---
+
+🌍 Internationalization (i18n)
+
+Supports Arabic & English
+
+Seamless language switching
+
+Fully localized UI content
+
+RTL / LTR layout handling
 
 ---
 
